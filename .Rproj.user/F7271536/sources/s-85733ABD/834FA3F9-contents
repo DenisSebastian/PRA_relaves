@@ -1,0 +1,64 @@
+library(stringr)
+library(tidyr)
+library(sf)
+
+
+# Cargar Funciones --------------------------------------------------------
+cor_especial <-  function(x){
+  x <-  gsub("m2", "", x)
+  x <-  gsub(":", " ", x)
+  return(x)
+}
+
+clean_vars <-  function(x){
+  y <- cor_especial(x)
+  y <- trimws(y)
+  return(y)
+}
+
+
+# Leer Insumo -------------------------------------------------------------
+
+
+kml_file <- c("~/Downloads/AV_sinfiltrar.kml")
+
+
+# carga info
+kml_pto <- st_read(kml_file) %>% st_zm() %>% mutate(id = 1:nrow(.))
+campo_xml <- c("N.", "Nombre", "Dirección", "Area", "M2", "Riego")
+
+
+# Iterador para separar por variables relevantes --------------------------
+
+#variable que se almacenarán los resultados
+df <-  kml_pto
+
+for(i in seq_along(campo_xml)){
+  data <- kml_pto %>%
+    st_drop_geometry() %>% 
+    select(id, Description) %>% 
+    mutate(origen = Description) %>% 
+    separate(origen, into = c("origen", campo_xml[i]),
+             sep = campo_xml[i], remove = T) %>% 
+    mutate(salida= gsub(paste0(campo_xml[i+1], ".*"),
+                        replacement = "",!!rlang::sym(campo_xml[i]))) %>% 
+    pull(salida)
+  
+  df <-  cbind(df, data)
+  names(df)[names(df) == "data"] <- campo_xml[i]
+  
+  
+}
+
+# Limpiar Los Resultados --------------------------------------------------
+
+df <- df %>% 
+  select(-campo_xml.i.) %>% 
+  mutate(across(all_of(campo_xml), .fns = clean_vars))
+
+
+
+# guardar los resultados --------------------------------------------------
+
+st_write(df, dsn = "~/Downloads/AV_sinfiltrar.shp")
+openxlsx::write.xlsx(st_drop_geometry(df), file = "~/Downloads/AV_sinfiltrar_tabla.xlsx")

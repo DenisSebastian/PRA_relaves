@@ -1,2 +1,10 @@
-Rproj.user
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+**/.DS_Store
+.DS_Store
+
+data/.DS_Store
 .DS_Store

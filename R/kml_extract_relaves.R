@@ -112,5 +112,5 @@ openxlsx::write.xlsx(st_drop_geometry(df),
 relaves_sf %>% 
   filter(estado_ins == "ACTIVO" & metodo_cons == "EMBALSE") %>% 
   arrange(desc(vol_autorizado)) %>% 
-  head(5) %>% 
+  # head(5) %>% 
   mapview::mapview()

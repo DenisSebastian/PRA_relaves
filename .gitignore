@@ -6,7 +6,12 @@
 .DS_Store
 **/.DS_Store
 .DS_Store
-documentos/**
+
 data/.DS_Store
 .DS_Store
 .Rproj.user
+
+
+
+documentos
+documentos/*

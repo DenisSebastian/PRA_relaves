@@ -35,17 +35,12 @@ clean_vars <-  function(x){
   return(y)
 }
 
-clean_vars <-  function(x){
-  y <- cor_especial(x)
-  y <- trimws(y)
-  return(y)
-}
-
-
 # Lectura de insumos ------------------------------------------------------
 
 kml_file <- "data/kml/relaves_2018.kml"
-kml_pto <- st_read(kml_file) %>% st_zm() %>% mutate(id = 1:nrow(.))
+kml_pto <- st_read(kml_file) %>% 
+  st_zm() %>% 
+  mutate(id = 1:nrow(.))
 
 
 
@@ -66,7 +61,7 @@ df <-  kml_pto
 for(i in seq_along(campo_xml)){
   data <- kml_pto %>%
     st_drop_geometry() %>% 
-    select(id, Description) %>% 
+    dplyr::select(id, Description) %>% 
     mutate(origen = Description) %>% 
     separate(origen, into = c("origen", campo_xml[i]),
              sep = campo_xml[i], remove = T) %>% 
@@ -76,7 +71,6 @@ for(i in seq_along(campo_xml)){
   
   df <-  cbind(df, data)
   names(df)[names(df) == "data"] <- campo_xml[i]
-  
   
 }
 
@@ -106,11 +100,9 @@ st_write(relaves_sf, dsn = "data/shp/relaves_2018.shp", delete_dsn = T)
 openxlsx::write.xlsx(st_drop_geometry(df), 
                      file = "data/tablas/relaves_2018.xlsx")
 
+saveRDS(relaves_sf, "data/rds/relaves_sf.rds")
 
 
 
-relaves_sf %>% 
-  filter(estado_ins == "ACTIVO" & metodo_cons == "EMBALSE") %>% 
-  arrange(desc(vol_autorizado)) %>% 
-  # head(5) %>% 
-  mapview::mapview()
+
+

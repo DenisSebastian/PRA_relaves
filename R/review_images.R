@@ -22,8 +22,8 @@ roi_buffer <- relaves_ee$first()$geometry()$buffer(50000)
 
 
 # Definción de Periodo de Estudio -----------------------------------------
-inicio <- '2018-01-01'
-fin <- '2021-03-01'
+inicio <- '2017-08-01'
+fin <- '2017-11-01'
 
 
 disponible <- ee$ImageCollection('LANDSAT/LC08/C01/T1_TOA')$
@@ -36,12 +36,12 @@ disponible <- ee$ImageCollection('LANDSAT/LC08/C01/T1_TOA')$
 # 
 # df_disponible
 
-landsat = disponible$median()$clip(roi_buffer)
+landsat3 = disponible$median()$clip(roi_buffer)
 
 
 viz <- list(min = 0, max = 0.5,  bands = c("B4", "B3", "B2"),
                gamma = c(0.95, 1.1, 1))
-Map$centerObject(eeObject = landsat, zoom = 8) 
+Map$centerObject(eeObject = landsat, zoom = 8)
 Map$addLayer(eeObject = landsat,visParams = viz)
 
 

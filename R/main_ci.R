@@ -13,7 +13,7 @@ library(sf)
 library(dplyr)
 library(purrr)
 library(rgee)
-ee_Initialize()
+ee_Initialize(drive = T)
 
 
 # Definir paràmetros ------------------------------------------------------
@@ -67,7 +67,8 @@ names(series) <-  names(list_relaves_ee)
 # revisión de resultados --------------------------------------------------
 
 
-vis_map(image_ee = series$`104`$A2019_Q1, vis_list = viz, zoom = 11)
+vis_map(image_ee = series$`105`$A2014_Q3, vis_list = viz, 
+        zoom = 11)
   
 
 
@@ -79,9 +80,9 @@ path_folders <-  paste0("data/images/", folders)
 path_folders %>% map(make_dir)
 
 # for(relave in 1:length(series)){#
-relave <- "104"
+relave <- "105"
   print(relave)
-  for (periodo in names(series[[relave]])[19]) {
+  for (periodo in names(series[[relave]])[28]) {
     local_path <- paste0("data/images/Relave_",
                          relave, "/R", relave, "_", periodo, ".tif")
     print(local_path)
@@ -95,9 +96,9 @@ relave <- "104"
       fileNamePrefix = paste0("R", relave, "_", periodo)
     )
     task_img$start()
-    # Sys.sleep(20)
     ee_monitoring(task_img)
     task_img$status()
+    Sys.sleep(25)
     if(task_img$status()$state=="COMPLETED"){
       img <- ee_drive_to_local(task = task_img, 
                                overwrite = T,

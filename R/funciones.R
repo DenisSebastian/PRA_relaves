@@ -44,6 +44,17 @@ make_dir <- function(path){
 }
 
 
+#normalizacion
+minmax <- function(x) {
+  x <- as.numeric(x)
+  x <- (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+  return(x)
+}
+
+select_class <- function(num_class) {
+  function(x){ifelse(x == num_class, 1, NA)}}
+
+
 # vis_map_list <-  function(list_img,  vis_list, zoom){
 #   m <- Map$centerObject(eeObject = list_img[[1]], zoom = zoom)
 #   

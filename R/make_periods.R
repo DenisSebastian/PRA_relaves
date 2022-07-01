@@ -50,3 +50,6 @@ periodos <- periodos %>%
 # guardar -----------------------------------------------------------------
 
 saveRDS(periodos, "data/rds/periodos.rds")
+
+periodos <- readRDS("data/rds/periodos.rds")
+periodos %>% View()

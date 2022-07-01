@@ -41,8 +41,8 @@ while(finales != fin){
 # consolidar --------------------------------------------------------------
 
 periodos <- periodos %>% 
-  mutate(periodo = paste0(year(inicios),        
-       " Q", quarter(inicios)),
+  mutate(periodo = paste0("A",year(inicios),
+    "_Q", quarter(inicios)),
        id = 1:nrow(.)) %>% 
   select(id, everything())
 
@@ -50,3 +50,6 @@ periodos <- periodos %>%
 # guardar -----------------------------------------------------------------
 
 saveRDS(periodos, "data/rds/periodos.rds")
+
+periodos <- readRDS("data/rds/periodos.rds")
+periodos %>% View()

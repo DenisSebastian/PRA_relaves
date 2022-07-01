@@ -90,7 +90,7 @@ fechas <- c("RES_APRUEBA_FECHA", "RES_PDC_APRUEBA",
 
 relaves_sf <- relaves_sf %>% 
   mutate(across(all_of(numeros), .fns = function(x) as.numeric(gsub(",", ".",x)))) %>% 
-  mutate(across(all_of(fechas), .fns = lubridate::dmy)) %>% 
+  # mutate(across(all_of(fechas), .fns = lubridate::dmy)) %>% 
   janitor::clean_names()
 
 

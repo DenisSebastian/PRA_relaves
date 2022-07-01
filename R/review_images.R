@@ -19,6 +19,7 @@ relaves_ee <- readRDS("data/rds/relaves_selected.rds") %>%
   
 
 roi_buffer <- relaves_ee$first()$geometry()$buffer(50000)
+roi_buffer <- st_as_ee_buffer(sf_object = relaves[1,], buffer_size = buffer_size)
 
 
 # Definción de Periodo de Estudio -----------------------------------------
@@ -36,7 +37,7 @@ disponible <- ee$ImageCollection('LANDSAT/LC08/C01/T1_TOA')$
 # 
 # df_disponible
 
-landsat3 = disponible$median()$clip(roi_buffer)
+landsat = disponible$median()$clip(roi_buffer)
 
 
 viz <- list(min = 0, max = 0.5,  bands = c("B4", "B3", "B2"),
